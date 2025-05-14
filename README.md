@@ -18,7 +18,6 @@ After Effects script that allows you to quickly:
 
 <details>
 <summary> Import HLAE Clips </summary>
-<br>
 
 ### Usage
 1. Press the button
@@ -30,13 +29,13 @@ After Effects script that allows you to quickly:
 2. Create <cinematic_name> ae project folder and move it inside "HLAE Clips" ae project folder  
 3. Get info about all the files from selected folder  
 4. Import files (video, audios)  
-![image](https://github.com/user-attachments/assets/89f085e5-e43f-4f87-8705-eea4413c4389)  
+![image](https://github.com/user-attachments/assets/e08cd25d-3035-4cba-92d2-fb7b295d79f6)  
 5. If video has one of the following names, remember its framerate  
-![image](https://github.com/user-attachments/assets/cd939230-2982-40ae-b1e3-3e009d01ae88)  
+![image](https://github.com/user-attachments/assets/8b29668e-bf17-4a13-b6ac-e089b1e6e813)  
 6. Import image sequences  
 6.1. Change image sequence framerate to framerate of the main clip  
 6.2. If main clip is not found, change image sequence framerate to  
-![image](https://github.com/user-attachments/assets/c439e7ce-e5bc-4053-a2c4-dc287afff014)  
+![image](https://github.com/user-attachments/assets/b0a8e3f0-da95-4b40-a4ed-a031e2bf93c8)  
 7. Move all files inside <cinematic_folder> ae project folder  
 8. Precompose the <cinematic_folder> ae project folder  
 9. Invert layer order (so layers are placed in alphabetical order)  
@@ -49,7 +48,6 @@ After Effects script that allows you to quickly:
 
 <details>
 <summary> Setup EXR Depth </summary>
-<br>
 
 ### Usage
 1. Select 6depthEXR sequence
@@ -74,7 +72,6 @@ It clamps rgb values of the depth to [0-1] range, that fixes blending mode issue
 
 <details>
 <summary> Import Camera (.cam) </summary>
-<br>
 
 ### Usage
 1. Press the button  
