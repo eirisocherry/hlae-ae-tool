@@ -2,10 +2,16 @@ function HLAEaeTOOL(thisObj) {
 
   // -------------------Global variables-------------------
 
+	var fileFormats;
+	var mainClipName;
+	var cineFramerate;
+
 	// Adjustable variables (feel free to change them)
-	var videoFormats = [".mp4", ".mov", ".avi", ".mkv", ".flv", ".wmv", ".wav", ".mp3"]; // File formats that After Effects will try to import
-	var mainClipName = ["1beauty", "1normal", "1abnormal"]; // Take framerate from these clips and apply it to sequence
-	var cineFramerate = 30; // If main clip not found, apply this framerate to sequence
+	function updateGlobalVariables() {
+		fileFormats = [".mp4", ".mov", ".avi", ".mkv", ".flv", ".wmv", ".wav", ".mp3"]; // File formats that After Effects will try to import
+		mainClipName = ["1beauty", "1normal", "1abnormal"]; // Take framerate from these clips and apply it to image sequences
+		cineFramerate = 30; // If main clip is not found, apply this framerate to image sequences
+	}
 
 	// About
 	var name = "HLAE AE TOOL";
@@ -86,6 +92,8 @@ function HLAEaeTOOL(thisObj) {
 		app.project.save();
 
 		app.beginUndoGroup("Import clips");
+
+		updateGlobalVariables();
 
 		var file = File.openDialog("Choose any clip from a take folder");
 
@@ -393,6 +401,13 @@ function HLAEaeTOOL(thisObj) {
     return null;
 	}
 
+	function isInArray(array, value) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i] === value) return true;
+		}
+		return false;
+	}
+
 	function clearProjectSelection() {
 		var sel = app.project.selection;
 		for (var i = 0; i < sel.length; i++) {
@@ -401,7 +416,7 @@ function HLAEaeTOOL(thisObj) {
 	}
 
 	function processFolder(folder) {
-		// Create "clips" and "cinematic" folder in project
+		// Create folders in project
 		var hlaeClipsFolder = findProjectItemByName("HLAE Clips");
 		if (hlaeClipsFolder === null) {
 			hlaeClipsFolder = app.project.items.addFolder("HLAE Clips");
@@ -427,25 +442,25 @@ function HLAEaeTOOL(thisObj) {
 			var item = items[i];
 
 			if (item instanceof File) {
-				// Если это файл — проверяем, является ли он видеофайлом
+				// Get extension
 				var extension = getExtension(item.name).toLowerCase();
 				var isVideoFormat = false;
 
-				// Проверяем, есть ли расширение в списке видеорасширений
-				for (var j = 0; j < videoFormats.length; j++) {
-						if (videoFormats[j] === extension) {
+				// Check if supported extension
+				for (var j = 0; j < fileFormats.length; j++) {
+						if (fileFormats[j] === extension) {
 								isVideoFormat = true;
 								break;
 						}
 				}
 
 				if (
-						!/^\./.test(item.name) && // Пропускаем скрытые файлы
+						!/^\./.test(item.name) && // Skip hidden files
 						isVideoFormat
 				) {
 						var options = new ImportOptions();
 						options.file = item;
-						options.importAs = ImportAsType.FOOTAGE; // Импорт как Footage
+						options.importAs = ImportAsType.FOOTAGE;
 
 						try {
 								// Import file
@@ -457,7 +472,7 @@ function HLAEaeTOOL(thisObj) {
 								// Take framerate from main clip
 								var footageItemName = footageItem.name;
 								var baseName = footageItemName.replace(/\.\w+$/, ''); // Get name without extension
-								if (mainClipName.indexOf(baseName) !== -1) {
+								if (isInArray(mainClipName, baseName)) {
 									cineFramerate = footageItem.frameRate;
 								}
 						} catch (e) {
@@ -465,10 +480,10 @@ function HLAEaeTOOL(thisObj) {
 						}
 				}
 			} else if (item instanceof Folder) {
-				// is folder a sequence?
+				// Is folder a sequence?
 				var files = item.getFiles();
 				var sequenceFile = null;
-				var searcher = new RegExp("\\d{4,}"); // Ищем файлы с 4+ цифрами в имени
+				var searcher = new RegExp("\\d{4,}"); // Find files with 4+ digits in their name
 				
 				for (var j = 0; j < files.length; j++) {
 					if (files[j] instanceof File && searcher.test(files[j].name)) {
