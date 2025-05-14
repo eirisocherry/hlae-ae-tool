@@ -18,7 +18,7 @@ After Effects script that allows you to:
 ## Usage
 1. Open After Effects  
 2. Go to `Window`, scroll down and open `HLAE_AE_TOOL.jsx`  
-3. The script panel will open, it's dockable  
+3. The script panel will be opened, it's dockable  
 
 ## Support
 Author: https://www.youtube.com/@shy_rikki  
