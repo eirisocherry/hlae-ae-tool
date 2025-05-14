@@ -1,5 +1,5 @@
 # HLAE AE Tool
-After Effects script that allows you to:  
+After Effects script that allows you to quickly:  
 - Import HLAE Clips  
 - Setup EXR Depth  
 - Import camera (.cam)  
