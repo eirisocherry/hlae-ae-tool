@@ -469,6 +469,12 @@ function HLAEaeTOOL(thisObj) {
 								// Move to the project folder
 								footageItem.parentFolder = cineFolder;
 
+								// Prevent fps limit
+								if (footageItem.frameRate > 999) {
+									footageItem.mainSource.conformFrameRate = 500;
+									footageItem.mainSource.proxyFrameRate = 500;
+								}
+
 								// Take framerate from main clip
 								var footageItemName = footageItem.name;
 								var baseName = footageItemName.replace(/\.\w+$/, ''); // Get name without extension
