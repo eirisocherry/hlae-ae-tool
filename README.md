@@ -83,7 +83,7 @@ It clamps rgb values of the depth to [0-1] range, that fixes blending mode issue
 2. Choose .cam file  
 3. Done  
 
-### Differences from the [official camera importer (.cam)](https://github.com/xNWP/HLAE-CamIO-To-AE/releases)  
+### Differences from the [official camera importer](https://github.com/xNWP/HLAE-CamIO-To-AE/releases)  
 - Automatically sets hold keyframes, so tracking stays accurate even if you use time remapping  
 - No errors when running the script through window tab  
 - More alerts that help to avoid mistakes  
