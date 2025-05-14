@@ -1,4 +1,4 @@
-# HLAE-AE-TOOL
+# HLAE AE Tool
 After Effects script that allows you to:  
 - Import HLAE Clips  
 - Setup EXR Depth  
