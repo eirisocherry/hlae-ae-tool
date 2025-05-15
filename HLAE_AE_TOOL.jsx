@@ -3,14 +3,12 @@ function HLAEaeTOOL(thisObj) {
   // -------------------Global variables-------------------
 
 	var fileFormats;
-	var mainClipName;
 	var cineFramerate;
 
 	// Adjustable variables (feel free to change them)
 	function updateGlobalVariables() {
 		fileFormats = [".mp4", ".mov", ".avi", ".mkv", ".flv", ".wmv", ".wav", ".mp3"]; // File formats that After Effects will try to import
-		mainClipName = ["1beauty", "1normal", "1abnormal"]; // Take framerate from these clips and apply it to image sequences
-		cineFramerate = 30; // If main clip is not found, apply this framerate to image sequences
+		cineFramerate = 500; // If no videos in folder, apply this framerate to image sequences
 	}
 
 	// About
@@ -476,9 +474,7 @@ function HLAEaeTOOL(thisObj) {
 								}
 
 								// Take framerate from main clip
-								var footageItemName = footageItem.name;
-								var baseName = footageItemName.replace(/\.\w+$/, ''); // Get name without extension
-								if (isInArray(mainClipName, baseName)) {
+								if (footageItem.hasVideo) {
 									cineFramerate = footageItem.frameRate;
 								}
 						} catch (e) {
