@@ -9,7 +9,7 @@ After Effects script that allows you to quickly:
 2. Move `HLAE_AE_TOOL` folder and `HLAE_AE_TOOL.jsx` script to:  
 `C:\Program Files\Adobe\Adobe After Effects <version>\Support Files\Scripts\ScriptUI Panels`  
 2.1. [Optional] Edit `HLAE_AE_TOOL.jsx` and adjust the variables (read manual for more info)  
-![image](https://github.com/user-attachments/assets/0d5d769e-f366-4d02-a661-e0c27f6fdcc9)  
+![image](https://github.com/user-attachments/assets/27784485-b3c8-4d30-91ad-a9291992027d)  
 3. Restart After Effects  
 4. Go to `Window`, scroll down and open `HLAE_AE_TOOL.jsx`  
 5. Dock the script panel  
@@ -30,16 +30,14 @@ After Effects script that allows you to quickly:
 3. Get info about all the files from selected folder  
 4. Import files (video, audios)  
 ![image](https://github.com/user-attachments/assets/e08cd25d-3035-4cba-92d2-fb7b295d79f6)  
-5. If video has one of the following names, remember its framerate  
-![image](https://github.com/user-attachments/assets/8b29668e-bf17-4a13-b6ac-e089b1e6e813)  
-6. Import image sequences  
-6.1. Change image sequence framerate to framerate of the main clip  
-6.2. If main clip is not found, change image sequence framerate to  
-![image](https://github.com/user-attachments/assets/b0a8e3f0-da95-4b40-a4ed-a031e2bf93c8)  
-7. Move all files inside <cinematic_folder> ae project folder  
-8. Precompose the <cinematic_folder> ae project folder  
-9. Invert layer order (so layers are placed in alphabetical order)  
-10. Hide all layers except the first one at the top (to improve perfomance)  
+5. Import image sequences  
+5.1. Change image sequence framerate to framerate of the last imported video  
+5.2. If there were no videos in the folder, change image sequence framerate to  
+![image](https://github.com/user-attachments/assets/0d273195-1f2b-42e9-b925-dbdcd8e2f222)  
+6. Move all files inside <cinematic_folder> ae project folder  
+7. Precompose the <cinematic_folder> ae project folder  
+8. Invert layer order (so layers are placed in alphabetical order)  
+9. Hide all layers except the first one at the top (to improve perfomance)  
 
 <br>
 </details>
