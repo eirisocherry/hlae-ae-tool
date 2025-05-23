@@ -4,6 +4,9 @@ After Effects script that allows you to quickly:
 - Setup EXR Depth  
 - Import camera (.cam)  
 
+Video tutorial: https://www.youtube.com/watch?v=FWEqkaiXNM0  
+
+
 ## Installation
 1. Download the script: https://github.com/eirisocherry/hlae-ae-tool/releases  
 2. Move `HLAE_AE_TOOL` folder and `HLAE_AE_TOOL.jsx` script to:  
