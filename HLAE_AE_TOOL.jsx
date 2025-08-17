@@ -13,7 +13,7 @@ function HLAEaeTOOL(thisObj) {
 
 	// About
 	var name = "HLAE AE TOOL";
-	var version = "1.0";
+	var version = "1.1";
 
 	// Misc
 	var alertMessage = [];
@@ -434,89 +434,113 @@ function HLAEaeTOOL(thisObj) {
 		}
 		cineFolder.parentFolder = hlaeClipsFolder;
 
-		// Import files
-		var items = folder.getFiles();
-		for (var i = 0; i < items.length; i++) {
-			var item = items[i];
+    // Get all items
+    var items = folder.getFiles();
+    var videoFiles = [];
+    var sequenceFolders = [];
 
-			if (item instanceof File) {
-				// Get extension
-				var extension = getExtension(item.name).toLowerCase();
-				var isVideoFormat = false;
+    // Separate video files and sequence folders
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      
+      if (item instanceof File) {
+        // Get extension
+        var extension = getExtension(item.name).toLowerCase();
+        var isVideoFormat = false;
 
-				// Check if supported extension
-				for (var j = 0; j < fileFormats.length; j++) {
-						if (fileFormats[j] === extension) {
-								isVideoFormat = true;
-								break;
-						}
-				}
+        // Check if supported extension
+        for (var j = 0; j < fileFormats.length; j++) {
+          if (fileFormats[j] === extension) {
+            isVideoFormat = true;
+            break;
+          }
+        }
 
-				if (
-						!/^\./.test(item.name) && // Skip hidden files
-						isVideoFormat
-				) {
-						var options = new ImportOptions();
-						options.file = item;
-						options.importAs = ImportAsType.FOOTAGE;
+        if (!/^\./.test(item.name) && isVideoFormat) {
+          videoFiles.push(item);
+        }
+      } else if (item instanceof Folder) {
+        sequenceFolders.push(item);
+      }
+    }
 
-						try {
-								// Import file
-								var footageItem = app.project.importFile(options);
-								
-								// Move to the project folder
-								footageItem.parentFolder = cineFolder;
+    // Import video files and get framerate
+    var firstVideo = true; 
+    for (var i = 0; i < videoFiles.length; i++) {
+      var item = videoFiles[i];
+      
+      var options = new ImportOptions();
+      options.file = item;
+      options.importAs = ImportAsType.FOOTAGE;
 
-								// Prevent fps limit
-								if (footageItem.frameRate > 999) {
-									footageItem.mainSource.conformFrameRate = 500;
-									footageItem.mainSource.proxyFrameRate = 500;
-								}
+      try {
+        // Import file
+        var footageItem = app.project.importFile(options);
+        
+        // Move to the project folder
+        footageItem.parentFolder = cineFolder;
 
-								// Take framerate from main clip
-								if (footageItem.hasVideo) {
-									cineFramerate = footageItem.frameRate;
-								}
-						} catch (e) {
-								alert("Import error: " + item.fullName + "\n" + e.message);
-						}
-				}
-			} else if (item instanceof Folder) {
-				// Is folder a sequence?
-				var files = item.getFiles();
-				var sequenceFile = null;
-				var searcher = new RegExp("\\d{4,}"); // Find files with 4+ digits in their name
-				
-				for (var j = 0; j < files.length; j++) {
-					if (files[j] instanceof File && searcher.test(files[j].name)) {
-						sequenceFile = files[j];
-						break;
-					}
-				}
+        // Prevent fps limit
+        if (footageItem.frameRate > 999) {
+          footageItem.mainSource.conformFrameRate = 500;
+          footageItem.mainSource.proxyFrameRate = 500;
+        }
 
-				if (sequenceFile) {
-						var options = new ImportOptions();
-						options.file = sequenceFile;
-						options.importAs = ImportAsType.FOOTAGE;
-						options.sequence = true;
-		
-						try {
-							// Import file
-							var footageItem = app.project.importFile(options);
+        if (footageItem.hasVideo) {
+          // Take framerate from main clip
+          if (firstVideo) {
+            cineFramerate = footageItem.frameRate;
+            firstVideo = false;
+          }
+          // Set framerate from main clip
+          else {
+            footageItem.mainSource.conformFrameRate = cineFramerate;
+          }
+        }
 
-							// Change framerate
-							footageItem.name = item.name;
-							footageItem.mainSource.conformFrameRate = cineFramerate;
-							footageItem.mainSource.proxyFrameRate = cineFramerate;
+      } catch (e) {
+        alert("Import error: " + item.fullName + "\n" + e.message);
+      }
+    }
 
-							// Move to the project folder
-							footageItem.parentFolder = cineFolder;
-						} catch (e) {
-								alert("Import error: " + item.fullName + "\n" + e.message);
-						}
-				}
-			}
-		}
+    // Import sequence folders
+    for (var i = 0; i < sequenceFolders.length; i++) {
+      var item = sequenceFolders[i];
+      
+      // Is folder a sequence?
+      var files = item.getFiles();
+      var sequenceFile = null;
+      var searcher = new RegExp("\\d{4,}"); // Find files with 4+ digits in their name
+      
+      for (var j = 0; j < files.length; j++) {
+        if (files[j] instanceof File && searcher.test(files[j].name)) {
+          sequenceFile = files[j];
+          break;
+        }
+      }
+
+      if (sequenceFile) {
+        var options = new ImportOptions();
+        options.file = sequenceFile;
+        options.importAs = ImportAsType.FOOTAGE;
+        options.sequence = true;
+
+        try {
+          // Import file
+          var footageItem = app.project.importFile(options);
+
+          // Change framerate
+          footageItem.name = item.name;
+          footageItem.mainSource.conformFrameRate = cineFramerate;
+          footageItem.mainSource.proxyFrameRate = cineFramerate;
+
+          // Move to the project folder
+          footageItem.parentFolder = cineFolder;
+        } catch (e) {
+          alert("Import error: " + item.fullName + "\n" + e.message);
+        }
+      }
+    }
 
 		// Precomp folder
 		var precomp = precompFolder(cineFolder);
